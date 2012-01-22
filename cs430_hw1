@@ -1,0 +1,77 @@
+#!/bin/bash
+# Bash wrapper for JavaScript Graphics computations
+# Safely wraps negative rotations
+FILENAME=
+SCALE=
+ROTATION=
+TRANSLATEX=
+TRANSLATEY=
+LOWERX=
+LOWERY=
+UPPERX=
+UPPERY=
+while getopts "f:s:r:m:n:a:b:c:d:" OPTION
+do
+  case $OPTION in
+    f)
+      FILENAME=$OPTARG
+      ;;
+    s)
+      SCALE=$OPTARG
+      ;;
+    r)
+      ROTATION=$OPTARG
+      ;;
+    m)
+      TRANSLATEX=$OPTARG
+      ;;
+    n)
+      TRANSLATEY=$OPTARG
+      ;;
+    a)
+      LOWERX=$OPTARG
+      ;;
+    b)
+      LOWERY=$OPTARG
+      ;;
+    c)
+      UPPERX=$OPTARG
+      ;;
+    d)
+      UPPERY=$OPTARG
+      ;;
+  esac
+done
+PARAMS=""
+if [ -n "${FILENAME}" ]; then
+  PARAMS="${PARAMS} -f ${FILENAME}"
+fi
+if [ -n "${SCALE}" ]; then
+  PARAMS="${PARAMS} -s ${SCALE}"
+fi
+if [ -n "${ROTATION}" ]; then
+  if [ ${ROTATION:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -nr ${ROTATION:1:100}"
+  else
+    PARAMS="${PARAMS} -r ${ROTATION}"
+  fi
+fi
+if [ -n "${TRANSLATEX}" ]; then
+  PARAMS="${PARAMS} -m ${TRANSLATEX}"
+fi
+if [ -n "${TRANSLATEY}" ]; then
+  PARAMS="${PARAMS} -f ${TRANSLATEY}"
+fi
+if [ -n "${LOWERX}" ]; then
+  PARAMS="${PARAMS} -a ${LOWERX}"
+fi
+if [ -n "${LOWERY}" ]; then
+  PARAMS="${PARAMS} -b ${LOWERY}"
+fi
+if [ -n "${UPPERX}" ]; then
+  PARAMS="${PARAMS} -c ${UPPERX}"
+fi
+if [ -n "${UPPERY}" ]; then
+  PARAMS="${PARAMS} -f ${UPPERY}"
+fi
+node index.js${PARAMS}
