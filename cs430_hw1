@@ -51,7 +51,7 @@ if [ -n "${SCALE}" ]; then
 fi
 if [ -n "${ROTATION}" ]; then
   if [ ${ROTATION:0:1} == "-" ]; then
-    PARAMS="${PARAMS} -nr ${ROTATION:1:100}"
+    PARAMS="${PARAMS} -z ${ROTATION:1:100}"
   else
     PARAMS="${PARAMS} -r ${ROTATION}"
   fi
@@ -60,7 +60,7 @@ if [ -n "${TRANSLATEX}" ]; then
   PARAMS="${PARAMS} -m ${TRANSLATEX}"
 fi
 if [ -n "${TRANSLATEY}" ]; then
-  PARAMS="${PARAMS} -f ${TRANSLATEY}"
+  PARAMS="${PARAMS} -n ${TRANSLATEY}"
 fi
 if [ -n "${LOWERX}" ]; then
   PARAMS="${PARAMS} -a ${LOWERX}"
@@ -72,6 +72,6 @@ if [ -n "${UPPERX}" ]; then
   PARAMS="${PARAMS} -c ${UPPERX}"
 fi
 if [ -n "${UPPERY}" ]; then
-  PARAMS="${PARAMS} -f ${UPPERY}"
+  PARAMS="${PARAMS} -d ${UPPERY}"
 fi
 node index.js${PARAMS}
