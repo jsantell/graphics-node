@@ -1,0 +1,113 @@
+#!/bin/bash
+# Bash wrapper for JavaScript Graphics computations
+# Safely wraps negative rotations
+FILENAME=
+SCALE=
+ROTATION=
+TRANSLATEX=
+TRANSLATEY=
+LOWERX=
+LOWERY=
+UPPERX=
+UPPERY=
+VIEWX0=
+VIEWY0=
+VIEWX1=
+VIEWY1=
+while getopts "f:s:r:m:n:a:b:c:d:j:k:o:p:" OPTION
+do
+  case $OPTION in
+    f)
+      FILENAME=$OPTARG
+      ;;
+    s)
+      SCALE=$OPTARG
+      ;;
+    r)
+      ROTATION=$OPTARG
+      ;;
+    m)
+      TRANSLATEX=$OPTARG
+      ;;
+    n)
+      TRANSLATEY=$OPTARG
+      ;;
+    a)
+      LOWERX=$OPTARG
+      ;;
+    b)
+      LOWERY=$OPTARG
+      ;;
+    c)
+      UPPERX=$OPTARG
+      ;;
+    d)
+      UPPERY=$OPTARG
+      ;;
+    j)
+      VIEWX0=$OPTARG
+      ;;
+    k)
+      VIEWY0=$OPTARG
+      ;;
+    o)
+      VIEWX1=$OPTARG
+      ;;
+    p)
+      VIEWY1=$OPTARG
+      ;;
+  esac
+done
+PARAMS=""
+if [ -n "${FILENAME}" ]; then
+  PARAMS="${PARAMS} -f ${FILENAME}"
+fi
+if [ -n "${SCALE}" ]; then
+  PARAMS="${PARAMS} -s ${SCALE}"
+fi
+if [ -n "${ROTATION}" ]; then
+  if [ ${ROTATION:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -z ${ROTATION:1:100}"
+  else
+    PARAMS="${PARAMS} -r ${ROTATION}"
+  fi
+fi
+if [ -n "${TRANSLATEX}" ]; then
+  if [ ${TRANSLATEX:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -x ${TRANSLATEX:1:100}"
+  else
+    PARAMS="${PARAMS} -m ${TRANSLATEX}"
+  fi
+fi
+if [ -n "${TRANSLATEY}" ]; then
+  if [ ${TRANSLATEY:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -y ${TRANSLATEY:1:100}"
+  else
+    PARAMS="${PARAMS} -n ${TRANSLATEY}"
+  fi
+fi
+if [ -n "${VIEWX0}" ]; then
+  PARAMS="${PARAMS} -j ${VIEWX0}"
+fi
+if [ -n "${VIEWY0}" ]; then
+  PARAMS="${PARAMS} -k ${VIEWY0}"
+fi
+if [ -n "${VIEWX1}" ]; then
+  PARAMS="${PARAMS} -o ${VIEWX1}"
+fi
+if [ -n "${VIEWY1}" ]; then
+  PARAMS="${PARAMS} -p ${VIEWY1}"
+fi
+if [ -n "${LOWERX}" ]; then
+  PARAMS="${PARAMS} -a ${LOWERX}"
+fi
+if [ -n "${LOWERY}" ]; then
+  PARAMS="${PARAMS} -b ${LOWERY}"
+fi
+if [ -n "${UPPERX}" ]; then
+  PARAMS="${PARAMS} -c ${UPPERX}"
+fi
+if [ -n "${UPPERY}" ]; then
+  PARAMS="${PARAMS} -d ${UPPERY}"
+fi
+node index.js${PARAMS}
