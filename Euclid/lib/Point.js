@@ -1,7 +1,7 @@
 var Point = function(x, y, z) {
-    this.x = ~~x;
-    this.y = ~~y;
-    this.z = ~~z;
+    this.x = +x;
+    this.y = +y;
+    this.z = +z;
 };
 
 Point.prototype = {
@@ -41,7 +41,24 @@ Point.prototype = {
   },
   homogenousCoordinates : function() {
     return new Matrix([[this.x], [this.y], [1]]);
+  },
+  
+  homogenousCoordinates3D : function() {
+    return new Matrix([[this.x], [this.y], [this.z], [1]]);
+  },
+
+  perspectiveProjection : function(d) {
+    // Can simplify multiplying by the homogenous matrix
+    this.x = this.x / ( this.z / d );
+    this.y = this.y / ( this.z / d );
+    this.z = d;
   }
+
+  orthogonalProjection : function() {
+    // Can simplify by making z 0
+    this.z = 0;
+  }
+
 };
 
 module.exports = Point;

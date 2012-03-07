@@ -19,6 +19,18 @@ Polygon.prototype = {
     this.points.forEach(function(point) {
       point.translate(x, y);
     });
+  },
+
+  perspective : function(d) {
+    this.points.forEach(function(point) {
+      point.perspective(d);
+    });
+  },
+
+  orthographic : function() {
+    this.points.forEach(function(point) {
+      point.orthographic();
+    });
   }
 };
 

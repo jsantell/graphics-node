@@ -35,6 +35,24 @@ Matrix.prototype = {
 
 }
 
+Matrix.perspective = function(d) {
+  return new Matrix([
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 1/d, 0]
+  ]);
+}
+
+Matrix.orthographic = function() {
+  return new Matrix([
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 1]
+  ]);
+}
+
 Matrix.scaling = function(x, y) {
   return new Matrix([
     [x, 0, 0],
@@ -58,6 +76,62 @@ Matrix.translation = function(x, y) {
     [1, 0, x],
     [0, 1, y],
     [0, 0, 1]
+  ]);
+}
+
+Matrix.translateOrigin3D = function(vrp) {
+  return new Matrix([
+    [1, 0, 0, -vrp.x],
+    [0, 1, 0, -vrp.y],
+    [0, 0, 1, -vrp.z],
+    [0, 0, 0, 1]
+  ]);
+}
+
+Matrix.rotate3D = function(vpn, vup) {
+  var
+    r3 = vpn.normalize(),
+    r1 = vup.cross(r3).normalize(),
+    r2 = r1.cross(r3);
+  return new Matrix([
+    [r1.x, r1.y, r1.z, 0],
+    [r2.x, r2.y, r2.z, 0],
+    [r3.x, r3.y, r3.z, 0],
+    [   0,    0,    0, 1]
+  ]);
+}
+
+Matrix.shear3D = function(viewMin, viewMax, prp) {
+  var
+    a = ( 1/(2 * (viewMax.x + viewMin.x)) - prp.x) / prp.z,
+    b = ( 1/(2 * (viewMax.y + viewMin.y)) - prp.y) / prp.z;
+  return new Matrix([
+    [1, 0, a, 0],
+    [0, 1, b, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+  ]);
+}
+
+Matrix.translate3D = function(viewMin, viewMax, front) {
+  return new Matrix([
+    [1, 0, 0, -(viewMax.x + viewMin.x)/2],
+    [0, 1, 0, -(viewMax.y + viewMin.y)/2],
+    [0, 0, 1, -front],
+    [0, 0, 0, 1]
+  ]);
+}
+
+Matrix.scale3D = function(viewMin, viewMax, front, back) {
+  var
+    a = 2 / (viewMax.x - viewMin.x),
+    b = 2 / (viewMax.y - viewMin.y),
+    c = 1 / (front - back);
+  return new Matrix([
+    [a, 0, 0, 0],
+    [0, b, 0, 0],
+    [0, 0, c, 0],
+    [0, 0, 0, 1]
   ]);
 }
 
