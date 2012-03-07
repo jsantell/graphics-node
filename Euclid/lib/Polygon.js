@@ -21,15 +21,21 @@ Polygon.prototype = {
     });
   },
 
-  perspective : function(d) {
+  matrixTransform : function(M) {
     this.points.forEach(function(point) {
-      point.perspective(d);
+      point.matrixTransform(M);
     });
   },
 
-  orthographic : function() {
+  perspectiveProjection : function(d) {
     this.points.forEach(function(point) {
-      point.orthographic();
+      point.perspectiveProjection(d);
+    });
+  },
+
+  orthogonalProjection : function() {
+    this.points.forEach(function(point) {
+      point.orthogonalProjection();
     });
   }
 };

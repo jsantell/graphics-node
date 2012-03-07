@@ -52,11 +52,19 @@ Point.prototype = {
     this.x = this.x / ( this.z / d );
     this.y = this.y / ( this.z / d );
     this.z = d;
-  }
+  },
 
   orthogonalProjection : function() {
     // Can simplify by making z 0
     this.z = 0;
+  },
+
+  matrixTransform : function(M) {
+    var
+      m = M.multiply(this.homogenousCoordinates3D());
+    this.x = m.elements[0][0];
+    this.y = m.elements[1][0];
+    this.z = m.elements[2][0];
   }
 
 };

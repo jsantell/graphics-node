@@ -78,8 +78,8 @@ Matrix.translation = function(x, y) {
     [0, 0, 1]
   ]);
 }
-
-Matrix.translateOrigin3D = function(vrp) {
+// can be vrp or prp
+Matrix.translate3D = function(vrp) {
   return new Matrix([
     [1, 0, 0, -vrp.x],
     [0, 1, 0, -vrp.y],
@@ -103,8 +103,8 @@ Matrix.rotate3D = function(vpn, vup) {
 
 Matrix.shear3D = function(viewMin, viewMax, prp) {
   var
-    a = ( 1/(2 * (viewMax.x + viewMin.x)) - prp.x) / prp.z,
-    b = ( 1/(2 * (viewMax.y + viewMin.y)) - prp.y) / prp.z;
+    a = ( 1/2 * (viewMax.x + viewMin.x) - prp.x) / prp.z,
+    b = ( 1/2 * (viewMax.y + viewMin.y) - prp.y) / prp.z;
   return new Matrix([
     [1, 0, a, 0],
     [0, 1, b, 0],
@@ -113,7 +113,7 @@ Matrix.shear3D = function(viewMin, viewMax, prp) {
   ]);
 }
 
-Matrix.translate3D = function(viewMin, viewMax, front) {
+Matrix.translate3D_ort = function(viewMin, viewMax, front) {
   return new Matrix([
     [1, 0, 0, -(viewMax.x + viewMin.x)/2],
     [0, 1, 0, -(viewMax.y + viewMin.y)/2],
@@ -122,11 +122,25 @@ Matrix.translate3D = function(viewMin, viewMax, front) {
   ]);
 }
 
-Matrix.scale3D = function(viewMin, viewMax, front, back) {
+Matrix.scale3D_ort = function(viewMin, viewMax, front, back) {
   var
     a = 2 / (viewMax.x - viewMin.x),
     b = 2 / (viewMax.y - viewMin.y),
     c = 1 / (front - back);
+  return new Matrix([
+    [a, 0, 0, 0],
+    [0, b, 0, 0],
+    [0, 0, c, 0],
+    [0, 0, 0, 1]
+  ]);
+}
+
+Matrix.scale3D_per = function(viewMin, viewMax, back, vrpPrime) {
+  var
+    vrpPrimeZ = vrpPrime.elements[2][0],
+    a = (2 * vrpPrimeZ) / ( (viewMax.x - viewMin.x)*(vrpPrimeZ + back) ),
+    b = (2 * vrpPrimeZ) / ( (viewMax.y - viewMin.y)*(vrpPrimeZ + back) ),
+    c = -1 / ( vrpPrimeZ + back );
   return new Matrix([
     [a, 0, 0, 0],
     [0, b, 0, 0],
@@ -143,20 +157,40 @@ Matrix.scale3D = function(viewMin, viewMax, front, back) {
    * viewMin : Point
    * viewMax : Point
    */
-  normalizeParallel : function(vrp, vpn, vup, prp, viewMin, viewMax) {
-    var
-      Torigin = Matrix.translateOrigin3D(vrp),
-      R = Matrix.rotate3D(vpn, vup),
-      SH = Matrix.shear3D(viewMin, viewMax, prp),
-      T = Matrix.translate3D(viewMin, viewMax, front),
-      S = Matrix.scale3D(viewMin, viewMax, front, back),
-      N = Torigin
-        .multiply(R)
-        .multiply(SH)
-        .multiply(T)
-        .multiply(S);
-    return N;
-  }
+Matrix.normalizeParallel = function(vrp, vpn, vup, prp, viewMin, viewMax, front, back) {
+  var
+    Torigin = Matrix.translate3D(vrp),
+    R = Matrix.rotate3D(vpn, vup),
+    SH = Matrix.shear3D(viewMin, viewMax, prp),
+    T = Matrix.translate3D_ort(viewMin, viewMax, front),
+    S = Matrix.scale3D_ort(viewMin, viewMax, front, back),
+    N = Torigin
+      .multiply(R)
+      .multiply(SH)
+      .multiply(T)
+      .multiply(S);
+  return N;
+}
+
+Matrix.normalizePerspective = function(vrp, vpn, vup, prp, viewMin, viewMax, front, back) {
+  var
+    Torigin = Matrix.translate3D(vrp),
+    R = Matrix.rotate3D(vpn, vup),
+    T = Matrix.translate3D(prp),
+    SH = Matrix.shear3D(viewMin, viewMax, prp),
+    S, N, vrpPrime;
+  vrpPrime = Matrix.shear3D(viewMin, viewMax, prp)
+    .multiply(Matrix.translate3D(prp))
+    .multiply(new Matrix([[0],[0],[0],[1]]));
+  console.log(vrpPrime);
+  S = Matrix.scale3D_per(viewMin, viewMax, back, vrpPrime),
+  N = Torigin
+    .multiply(R)
+    .multiply(T)
+    .multiply(SH)
+    .multiply(S);
+  return N;
+}
 
 Matrix.identity = function(dimensions) {
   M = [];
