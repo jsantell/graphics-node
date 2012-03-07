@@ -135,6 +135,29 @@ Matrix.scale3D = function(viewMin, viewMax, front, back) {
   ]);
 }
 
+  /*
+   * vrp : vector
+   * vpn : vector
+   * vup : vector
+   * prp : vector
+   * viewMin : Point
+   * viewMax : Point
+   */
+  normalizeParallel : function(vrp, vpn, vup, prp, viewMin, viewMax) {
+    var
+      Torigin = Matrix.translateOrigin3D(vrp),
+      R = Matrix.rotate3D(vpn, vup),
+      SH = Matrix.shear3D(viewMin, viewMax, prp),
+      T = Matrix.translate3D(viewMin, viewMax, front),
+      S = Matrix.scale3D(viewMin, viewMax, front, back),
+      N = Torigin
+        .multiply(R)
+        .multiply(SH)
+        .multiply(T)
+        .multiply(S);
+    return N;
+  }
+
 Matrix.identity = function(dimensions) {
   M = [];
   for (var i=0; i < dimensions; i++) {
