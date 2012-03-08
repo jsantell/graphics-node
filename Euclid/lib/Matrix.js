@@ -182,7 +182,7 @@ Matrix.normalizePerspective = function(vrp, vpn, vup, prp, viewMin, viewMax, fro
   vrpPrime = Matrix.shear3D(viewMin, viewMax, prp)
     .multiply(Matrix.translate3D(prp))
     .multiply(new Matrix([[0],[0],[0],[1]]));
-  console.log(vrpPrime);
+  
   S = Matrix.scale3D_per(viewMin, viewMax, back, vrpPrime),
   N = Torigin
     .multiply(R)

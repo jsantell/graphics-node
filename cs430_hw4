@@ -1,0 +1,147 @@
+#!/bin/bash
+# Bash wrapper for JavaScript Graphics computations
+# Safely wraps negative rotations
+FILENAME=
+VIEWX0=
+VIEWY0=
+VIEWX1=
+VIEWY1=
+while getopts "f:j:k:o:p:x:y:z:X:Y:Z:q:r:w:Q:R:W:u:v:U:V:P" OPTION
+do
+  case $OPTION in
+    f)
+      FILENAME=$OPTARG
+      ;;
+    j)
+      VIEWX0=$OPTARG
+      ;;
+    k)
+      VIEWY0=$OPTARG
+      ;;
+    o)
+      VIEWX1=$OPTARG
+      ;;
+    p)
+      VIEWY1=$OPTARG
+      ;;
+    x)
+      PRPX=$OPTARG
+      ;;
+    y)
+      PRPY=$OPTARG
+      ;;
+    z)
+      PRPZ=$OPTARG
+      ;;
+    X)
+      VRPX=$OPTARG
+      ;;
+    Y)
+      VRPY=$OPTARG
+      ;;
+    Z)
+      VRPZ=$OPTARG
+      ;;
+    q)
+      VPNX=$OPTARG
+      ;;
+    r)
+      VPNY=$OPTARG
+      ;;
+    w)
+      VPNZ=$OPTARG
+      ;;
+    Q)
+      VUPX=$OPTARG
+      ;;
+    R)
+      VUPY=$OPTARG
+      ;;
+    W)
+      VUPZ=$OPTARG
+      ;;
+    u)
+      UMIN=$OPTARG
+      ;;
+    v)
+      VMIN=$OPTARG
+      ;;
+    U)
+      UMAX=$OPTARG
+      ;;
+    V)
+      VMAX=$OPTARG
+      ;;
+    P)
+      PARA=1
+      ;;
+  esac
+done
+PARAMS=""
+if [ -n "${FILENAME}" ]; then
+  PARAMS="${PARAMS} -f ${FILENAME}"
+fi
+if [ -n "${VIEWX0}" ]; then
+  PARAMS="${PARAMS} -j ${VIEWX0}"
+fi
+if [ -n "${VIEWY0}" ]; then
+  PARAMS="${PARAMS} -k ${VIEWY0}"
+fi
+if [ -n "${VIEWX1}" ]; then
+  PARAMS="${PARAMS} -o ${VIEWX1}"
+fi
+if [ -n "${VIEWY1}" ]; then
+  PARAMS="${PARAMS} -p ${VIEWY1}"
+fi
+if [ -n "${PRPX}" ]; then
+  PARAMS="${PARAMS} -x ${PRPX}"
+fi
+if [ -n "${PRPY}" ]; then
+  PARAMS="${PARAMS} -y ${PRPY}"
+fi
+if [ -n "${PRPZ}" ]; then
+  PARAMS="${PARAMS} -z ${PRPZ}"
+fi
+if [ -n "${VRPX}" ]; then
+  PARAMS="${PARAMS} -X ${VRPX}"
+fi
+if [ -n "${VRPY}" ]; then
+  PARAMS="${PARAMS} -Y ${VRPY}"
+fi
+if [ -n "${VRPZ}" ]; then
+  PARAMS="${PARAMS} -Z ${VRPZ}"
+fi
+if [ -n "${VPNX}" ]; then
+  PARAMS="${PARAMS} -q ${VPNX}"
+fi
+if [ -n "${VPNY}" ]; then
+  PARAMS="${PARAMS} -r ${VPNY}"
+fi
+if [ -n "${VPNZ}" ]; then
+  PARAMS="${PARAMS} -w ${VPNZ}"
+fi
+if [ -n "${VUPX}" ]; then
+  PARAMS="${PARAMS} -Q ${VUPX}"
+fi
+if [ -n "${VUPY}" ]; then
+  PARAMS="${PARAMS} -R ${VUPY}"
+fi
+if [ -n "${VUPZ}" ]; then
+  PARAMS="${PARAMS} -W ${VUPZ}"
+fi
+if [ -n "${UMIN}" ]; then
+  PARAMS="${PARAMS} -u ${UMIN}"
+fi
+if [ -n "${VMIN}" ]; then
+  PARAMS="${PARAMS} -v ${VMIN}"
+fi
+if [ -n "${UMAX}" ]; then
+  PARAMS="${PARAMS} -U ${UMAX}"
+fi
+if [ -n "${VMAX}" ]; then
+  PARAMS="${PARAMS} -V ${VMAX}"
+fi
+if [ -n "${PARA}" ]; then
+  PARAMS="${PARAMS} -P ${PARA}"
+fi
+node index.js${PARAMS}

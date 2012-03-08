@@ -2,6 +2,7 @@ var Point = function(x, y, z) {
     this.x = +x;
     this.y = +y;
     this.z = +z;
+    this.w = null;
 };
 
 Point.prototype = {
@@ -44,7 +45,8 @@ Point.prototype = {
   },
   
   homogenousCoordinates3D : function() {
-    return new Matrix([[this.x], [this.y], [this.z], [1]]);
+    this.w = 1;
+    return new Matrix([[this.x], [this.y], [this.z], [this.w]]);
   },
 
   perspectiveProjection : function(d) {
@@ -65,6 +67,7 @@ Point.prototype = {
     this.x = m.elements[0][0];
     this.y = m.elements[1][0];
     this.z = m.elements[2][0];
+    this.w = m.elements[3][0];
   }
 
 };

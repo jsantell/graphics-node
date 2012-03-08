@@ -1,1 +1,1 @@
-module.exports = require('./lib/graphics');
+module.exports = require('./lib/graphics3D');
