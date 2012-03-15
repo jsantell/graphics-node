@@ -53,12 +53,20 @@ Matrix.orthographic = function() {
   ]);
 }
 
-Matrix.scaling = function(x, y) {
-  return new Matrix([
-    [x, 0, 0],
-    [0, y, 0],
-    [0, 0, 0]
-  ]);
+Matrix.scaling = function(x, y, z) {
+  var M = z ?
+    new Matrix([
+      [x, 0, 0, 0 ],
+      [0, y, 0, 0 ],
+      [0, 0, z, 0 ],
+      [0, 0, 0, 1 ]
+    ]) :
+    new Matrix([
+      [x, 0, 0],
+      [0, y, 0],
+      [0, 0, 1]
+    ]);
+  return M;
 }
 
 Matrix.rotation = function(angle, direction) {
@@ -71,12 +79,20 @@ Matrix.rotation = function(angle, direction) {
   ]);
 }
 
-Matrix.translation = function(x, y) {
-  return new Matrix([
-    [1, 0, x],
-    [0, 1, y],
-    [0, 0, 1]
-  ]);
+Matrix.translation = function(x, y, z) {
+  var M = z ?
+    new Matrix([
+      [1, 0, 0, x ],
+      [0, 1, 0, y ],
+      [0, 0, 1, z ],
+      [0, 0, 0, 1 ]
+    ]) :
+    new Matrix([
+      [1, 0, x],
+      [0, 1, y],
+      [0, 0, 1]
+    ]);
+  return M
 }
 // can be vrp or prp
 Matrix.translate3D = function(vrp) {
@@ -92,7 +108,7 @@ Matrix.rotate3D = function(vpn, vup) {
   var
     r3 = vpn.normalize(),
     r1 = vup.cross(r3).normalize(),
-    r2 = r1.cross(r3);
+    r2 = r3.cross(r1);
   return new Matrix([
     [r1.x, r1.y, r1.z, 0],
     [r2.x, r2.y, r2.z, 0],
@@ -164,11 +180,7 @@ Matrix.normalizeParallel = function(vrp, vpn, vup, prp, viewMin, viewMax, front,
     SH = Matrix.shear3D(viewMin, viewMax, prp),
     T = Matrix.translate3D_ort(viewMin, viewMax, front),
     S = Matrix.scale3D_ort(viewMin, viewMax, front, back),
-    N = Torigin
-      .multiply(R)
-      .multiply(SH)
-      .multiply(T)
-      .multiply(S);
+    N = S.multiply(T.multiply(SH.multiply(R.multiply(Torigin))));
   return N;
 }
 
@@ -184,11 +196,7 @@ Matrix.normalizePerspective = function(vrp, vpn, vup, prp, viewMin, viewMax, fro
     .multiply(new Matrix([[0],[0],[0],[1]]));
   
   S = Matrix.scale3D_per(viewMin, viewMax, back, vrpPrime),
-  N = Torigin
-    .multiply(R)
-    .multiply(T)
-    .multiply(SH)
-    .multiply(S);
+  N = S.multiply(SH.multiply(T.multiply(R.multiply(Torigin))));
   return N;
 }
 

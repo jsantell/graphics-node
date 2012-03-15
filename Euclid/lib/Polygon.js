@@ -9,15 +9,15 @@ Polygon.prototype = {
     });
   },
 
-  scale : function(x, y) {
+  scale : function(x, y, z) {
     this.points.forEach(function(point) {
-      point.scale(x, y);
+      point.scale(x, y, z);
     });
   },
 
-  translate : function(x, y) {
+  translate : function(x, y, z) {
     this.points.forEach(function(point) {
-      point.translate(x, y);
+      point.translate(x, y, z);
     });
   },
 

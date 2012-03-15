@@ -1,7 +1,7 @@
 var Point = function(x, y, z) {
     this.x = +x;
     this.y = +y;
-    this.z = +z;
+    this.z = z ? +z : null;
     this.w = null;
 };
 
@@ -26,19 +26,21 @@ Point.prototype = {
     this.x = m.elements[0][0];
     this.y = m.elements[1][0];
   },
-  scale : function(x, y) {
+  scale : function(x, y, z) {
     var
-      p = this.homogenousCoordinates(),
-      m = Matrix.scaling(x, y).multiply(p);
+      p = z ? this.homogenousCoordinates3D() : this.homogenousCoordinates(),
+      m = Matrix.scaling(x, y, z).multiply(p);
     this.x = m.elements[0][0];
     this.y = m.elements[1][0];
+    this.z = z ? m.elements[2][0] : null;
   },
-  translate : function(x, y) {
+  translate : function(x, y, z) {
     var
-      p = this.homogenousCoordinates(),
-      m = Matrix.translation(x, y).multiply(p);
+      p = z ? this.homogenousCoordinates3D() : this.homogenousCoordinates(),
+      m = Matrix.translation(x, y, z).multiply(p);
     this.x = m.elements[0][0];
     this.y = m.elements[1][0];
+    this.z = z ? m.elements[2][0] : null;
   },
   homogenousCoordinates : function() {
     return new Matrix([[this.x], [this.y], [1]]);
