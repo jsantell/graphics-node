@@ -66,10 +66,10 @@ Point.prototype = {
   matrixTransform : function(M) {
     var
       m = M.multiply(this.homogenousCoordinates3D());
-    this.x = m.elements[0][0];
-    this.y = m.elements[1][0];
-    this.z = m.elements[2][0];
     this.w = m.elements[3][0];
+    this.x = m.elements[0][0] / this.w;
+    this.y = m.elements[1][0] / this.w;
+    this.z = m.elements[2][0] / this.w;
   }
 
 };

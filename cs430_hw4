@@ -94,52 +94,116 @@ if [ -n "${VIEWY1}" ]; then
   PARAMS="${PARAMS} -p ${VIEWY1}"
 fi
 if [ -n "${PRPX}" ]; then
-  PARAMS="${PARAMS} -x ${PRPX}"
+  if [ ${PRPX:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -a ${PRPX:1:100}"
+  else
+    PARAMS="${PARAMS} -x ${PRPX}"
+  fi
 fi
 if [ -n "${PRPY}" ]; then
-  PARAMS="${PARAMS} -y ${PRPY}"
+  if [ ${PRPY:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -b ${PRPY:1:100}"
+  else
+    PARAMS="${PARAMS} -y ${PRPY}"
+  fi
 fi
 if [ -n "${PRPZ}" ]; then
-  PARAMS="${PARAMS} -z ${PRPZ}"
+  if [ ${PRPZ:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -c ${PRPZ:1:100}"
+  else
+    PARAMS="${PARAMS} -z ${PRPZ}"
+  fi
 fi
 if [ -n "${VRPX}" ]; then
-  PARAMS="${PARAMS} -X ${VRPX}"
+  if [ ${VRPX:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -A ${VRPX:1:100}"
+  else
+    PARAMS="${PARAMS} -X ${VRPX}"
+  fi
 fi
 if [ -n "${VRPY}" ]; then
-  PARAMS="${PARAMS} -Y ${VRPY}"
+  if [ ${VRPY:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -B ${VRPY:1:100}"
+  else
+    PARAMS="${PARAMS} -Y ${VRPY}"
+  fi
 fi
 if [ -n "${VRPZ}" ]; then
-  PARAMS="${PARAMS} -Z ${VRPZ}"
+  if [ ${VRPZ:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -C ${VRPZ:1:100}"
+  else
+    PARAMS="${PARAMS} -Z ${VRPZ}"
+  fi
 fi
 if [ -n "${VPNX}" ]; then
-  PARAMS="${PARAMS} -q ${VPNX}"
+  if [ ${VPNX:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -d ${VPNX:1:100}"
+  else
+    PARAMS="${PARAMS} -q ${VPNX}"
+  fi
 fi
 if [ -n "${VPNY}" ]; then
-  PARAMS="${PARAMS} -r ${VPNY}"
+  if [ ${VPNY:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -e ${VPNY:1:100}"
+  else
+    PARAMS="${PARAMS} -r ${VPNY}"
+  fi
 fi
 if [ -n "${VPNZ}" ]; then
-  PARAMS="${PARAMS} -w ${VPNZ}"
+  if [ ${VPNZ:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -g ${VPNZ:1:100}"
+  else
+    PARAMS="${PARAMS} -w ${VPNZ}"
+  fi
 fi
 if [ -n "${VUPX}" ]; then
-  PARAMS="${PARAMS} -Q ${VUPX}"
+  if [ ${VUPX:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -D ${VUPX:1:100}"
+  else
+    PARAMS="${PARAMS} -Q ${VUPX}"
+  fi
 fi
 if [ -n "${VUPY}" ]; then
-  PARAMS="${PARAMS} -R ${VUPY}"
+  if [ ${VUPY:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -E ${VUPY:1:100}"
+  else
+    PARAMS="${PARAMS} -R ${VUPY}"
+  fi
 fi
 if [ -n "${VUPZ}" ]; then
-  PARAMS="${PARAMS} -W ${VUPZ}"
+  if [ ${VUPZ:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -G ${VUPZ:1:100}"
+  else
+    PARAMS="${PARAMS} -W ${VUPZ}"
+  fi
 fi
 if [ -n "${UMIN}" ]; then
-  PARAMS="${PARAMS} -u ${UMIN}"
+  if [ ${UMIN:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -h ${UMIN:1:100}"
+  else
+    PARAMS="${PARAMS} -u ${UMIN}"
+  fi
 fi
 if [ -n "${VMIN}" ]; then
-  PARAMS="${PARAMS} -v ${VMIN}"
+  if [ ${VMIN:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -i ${VMIN:1:100}"
+  else
+    PARAMS="${PARAMS} -v ${VMIN}"
+  fi
 fi
 if [ -n "${UMAX}" ]; then
-  PARAMS="${PARAMS} -U ${UMAX}"
+  if [ ${UMAX:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -H ${UMAX:1:100}"
+  else
+    PARAMS="${PARAMS} -U ${UMAX}"
+  fi
 fi
 if [ -n "${VMAX}" ]; then
-  PARAMS="${PARAMS} -V ${VMAX}"
+  if [ ${VMAX:0:1} == "-" ]; then
+    PARAMS="${PARAMS} -I ${VMAX:1:100}"
+  else
+    PARAMS="${PARAMS} -V ${VMAX}"
+  fi
 fi
 if [ -n "${PARA}" ]; then
   PARAMS="${PARAMS} -P ${PARA}"
